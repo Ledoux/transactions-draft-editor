@@ -1,0 +1,52 @@
+{
+  "ava": {
+    "babel": {
+      "presets": [
+        "latest",
+        "react"
+      ]
+    },
+    "require": [
+      "babel-register",
+      "babel-polyfill"
+    ]
+  },
+  "author": "Erwan Ledoux",
+  "dependencies": {
+    "classnames": "2.2.5",
+    "draft-js": "^0.10.1",
+    "draft-js-alignment-plugin": "beta",
+    "draft-js-drag-n-drop-plugin": "beta",
+    "draft-js-focus-plugin": "beta",
+    "draft-js-image-plugin": "beta",
+    "draft-js-mathjax-plugin": "^1.3.4",
+    "draft-js-resizeable-plugin": "beta",
+    "draft-js-plugins-editor": "beta",
+    "transactions-dropzone-uploader": "latest",
+    "transactions-interface-web": "latest",
+    "react": "15.5.4"
+  },
+  "description": "In the framework of transactions, this is a frontend plugin that gives you very smart uis",
+  "devDependencies": {
+    "ava": "^0.18.2",
+    "babel-cli": "^6.24.1",
+    "babel-preset-latest": "^6.24.1",
+    "babel-preset-react": "^6.22.0",
+    "concurrently": "^3.1.0",
+    "nodemon": "^1.11.0",
+    "node-sass": "^4.5.3",
+    "standard": "^7.0.1"
+  },
+  "license": "MIT",
+  "main": "lib/index.js",
+  "name": "transactions-draft-editor",
+  "scripts": {
+    "compile": "babel --presets latest,react -d lib/ src/",
+    "test": "ava -v",
+    "dev": "npm run dev",
+    "dev-watch-sass": "node-sass -w src/styles -o lib/styles src/styles/index.scss",
+    "dev-watch-js": "nodemon --watch src --ignore src/styles --exec \"npm run compile\"",
+    "dev-watch": "concurrently \"npm run dev-watch-js\" \"npm run dev-watch-sass\""
+  },
+  "version": "0.0.1"
+}

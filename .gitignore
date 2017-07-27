@@ -1,0 +1,10 @@
+
+*.pyc
+.DS_store
+.git
+.sass-cache/
+.stylelintrc
+bower_components/
+docs/.ipynb_checkpoints
+node_modules/
+yarn-error.log

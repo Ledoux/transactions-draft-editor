@@ -1,0 +1,43 @@
+.image-add {
+  overflow-y: hidden;
+  padding-left: 0.25rem;
+  padding-right: 0.25rem;
+  &__url {
+    padding-top: 0.25rem;
+    &__input {
+      border: 1px solid rgba(0,0,0,.125);
+      border-radius: $border-radius;
+      color: $middle-font-color;
+      letter-spacing: 0.25px;
+      font-family: $font-family;
+      font-size: 14px;
+      height: 2rem;
+      padding-left: 0.25rem;
+      width: 12.5rem;
+      &:focus {
+        outline: none;
+      }
+    }
+  }
+  &__uploader {
+    cursor: pointer;
+    height: 2.35rem;
+    margin-right: 0.05rem;
+    overflow-y: hidden;
+    &__img {
+      height: 2rem;
+      width: 2rem;
+    }
+  }
+  &__insert {
+    background: transparent;
+    border: 1px solid $medium-grey;
+    border-radius: 50%;
+    height: 2rem;
+    margin-top: 0.25rem;
+    width: 2rem;
+    svg {
+      fill: $dark-grey;
+    }
+  }
+}
