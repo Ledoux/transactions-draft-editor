@@ -47,5 +47,5 @@
     "dev-watch-js": "nodemon --watch src --ignore src/styles --exec \"npm run compile\"",
     "dev-watch": "concurrently \"npm run dev-watch-js\" \"npm run dev-watch-sass\""
   },
-  "version": "0.0.1"
+  "version": "0.0.2"
 }
