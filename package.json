@@ -22,9 +22,8 @@
     "draft-js-mathjax-plugin": "^1.3.4",
     "draft-js-resizeable-plugin": "beta",
     "draft-js-plugins-editor": "beta",
-    "transactions-dropzone-uploader": "latest",
     "transactions-interface-web": "latest",
-    "react": "15.5.4"
+    "react": "^15.5.4"
   },
   "description": "In the framework of transactions, this is a frontend plugin that gives you very smart uis",
   "devDependencies": {
