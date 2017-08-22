@@ -1,8 +1,8 @@
 // from https://github.com/draft-js-plugins/draft-js-plugins/blob/c8261389407d128ef4edf669bed1186f161fbc0f/docs/client/components/pages/Image/AddImageEditor/ImageAdd/index.js
 import React, { Component } from 'react'
-
-import IconButton from './IconButton'
-import Uploader from './Uploader'
+import { IconButton,
+  Uploader
+} from 'transactions-interface-web'
 
 class ImageAdd extends Component {
   constructor (props) {
@@ -16,7 +16,7 @@ class ImageAdd extends Component {
     this.onImageError = this._onImageError.bind(this)
     this.onUrlChange = this._onUrlChange.bind(this)
   }
-  _onAddClick = () => {
+  _onAddClick () {
     const { editorState,
       onEditorChange,
       modifier
@@ -27,7 +27,7 @@ class ImageAdd extends Component {
   _onImageError () {
     this.setState({ isImage: false })
   }
-  _onUrlChange = (evt) => {
+  _onUrlChange (evt) {
     const { onUrlChange } = this.props
     this.setState({ url: evt.target.value })
     onUrlChange && onUrlChange()

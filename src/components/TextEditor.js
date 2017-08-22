@@ -14,13 +14,13 @@ import createImagePlugin from 'draft-js-image-plugin'
 import createMathjaxPlugin from 'draft-js-mathjax-plugin'
 import createResizeablePlugin from 'draft-js-resizeable-plugin'
 import Editor, { composeDecorators } from 'draft-js-plugins-editor'
-import 'draft-js-focus-plugin/lib/plugin.css'
-import 'draft-js-image-plugin/lib/plugin.css'
-import 'draft-js-alignment-plugin/lib/plugin.css'
+import 'css-loader!draft-js-focus-plugin/lib/plugin.css'
+import 'css-loader!draft-js-image-plugin/lib/plugin.css'
+import 'css-loader!draft-js-alignment-plugin/lib/plugin.css'
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
-import { Button
-  IconButton
+import { Button,
+  IconButton,
   ImageAdd,
   Uploader
 } from 'transactions-interface-web'
