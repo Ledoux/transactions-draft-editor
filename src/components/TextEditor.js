@@ -14,16 +14,14 @@ import createImagePlugin from 'draft-js-image-plugin'
 import createMathjaxPlugin from 'draft-js-mathjax-plugin'
 import createResizeablePlugin from 'draft-js-resizeable-plugin'
 import Editor, { composeDecorators } from 'draft-js-plugins-editor'
-import 'css-loader!draft-js-focus-plugin/lib/plugin.css'
-import 'css-loader!draft-js-image-plugin/lib/plugin.css'
-import 'css-loader!draft-js-alignment-plugin/lib/plugin.css'
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import { Button,
   IconButton,
-  ImageAdd,
   Uploader
 } from 'transactions-interface-web'
+
+import ImageAdd from './ImageAdd'
 
 const focusPlugin = createFocusPlugin()
 const resizeablePlugin = createResizeablePlugin()
@@ -56,7 +54,7 @@ const inlineStyleButtons = [
     string: 'ITALIC'
   },
   {
-    icon: 'italic',
+    icon: 'chain',
     string: 'LINK'
   }
 ]
@@ -125,6 +123,8 @@ class TextEditor extends Component {
         this.setState({ editorScrollTop: null })
       }
     })
+    console.log('lll', this._e)
+    console.log('AlignmentTool', AlignmentTool)
   }
   _blockStyleFn (contentBlock) {
     const type = this.props.type || contentBlock.getType()
@@ -252,7 +252,7 @@ class TextEditor extends Component {
           plugins={plugins}
           ref={ element => { this.editorElement = element }}
         />
-       { plugins.includes(alignmentPlugin) && <AlignmentTool /> }
+      { plugins.includes(alignmentPlugin) && <AlignmentTool ref={_e => { this._e = _e }} testa='ee'/> }
       </div>
     </div>)
   }
