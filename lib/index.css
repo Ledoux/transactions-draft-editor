@@ -1,0 +1,65 @@
+.image-add {
+  overflow-y: hidden;
+  padding-left: 0.25rem;
+  padding-right: 0.25rem; }
+  .image-add__url {
+    padding-top: 0.25rem; }
+    .image-add__url__input {
+      border: 1px solid rgba(0, 0, 0, 0.125);
+      border-radius: 0.25rem;
+      color: #777777;
+      letter-spacing: 0.25px;
+      font-family: "Raleway", "Helvetica Neue", Arial, sans-serif;
+      font-size: 14px;
+      height: 2rem;
+      padding-left: 0.25rem;
+      width: 12.5rem; }
+      .image-add__url__input:focus {
+        outline: none; }
+  .image-add__uploader {
+    cursor: pointer;
+    height: 2.35rem;
+    margin-right: 0.05rem;
+    overflow-y: hidden; }
+    .image-add__uploader__img {
+      height: 2rem;
+      width: 2rem; }
+  .image-add__insert {
+    background: transparent;
+    border: 1px solid #dcdddc;
+    border-radius: 50%;
+    height: 2rem;
+    margin-top: 0.25rem;
+    width: 2rem; }
+    .image-add__insert svg {
+      fill: #4a4a4a; }
+
+.text-editor {
+  overflow-y: hidden; }
+  .text-editor__control {
+    margin-bottom: 0.5rem;
+    overflow-y: hidden; }
+    .text-editor__control__inline {
+      margin-right: 0.5rem;
+      padding-top: 0.25rem; }
+  .text-editor__content {
+    border: 1px solid #dcdddc;
+    border-radius: 0.25rem;
+    box-sizing: border-box;
+    background: white;
+    height: 20rem;
+    font-family: "Raleway", "Helvetica Neue", Arial, sans-serif;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    overflow-y: auto; }
+    .text-editor__content__unstyled {
+      color: #777777;
+      font-family: "Raleway", "Helvetica Neue", Arial, sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 20px; }
+
+.public-DraftEditorPlaceholder-inner {
+  color: #c5c5c5;
+  font-family: "Raleway", "Helvetica Neue", Arial, sans-serif;
+  font-size: 14px; }

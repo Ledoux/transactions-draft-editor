@@ -123,8 +123,6 @@ class TextEditor extends Component {
         this.setState({ editorScrollTop: null })
       }
     })
-    console.log('lll', this._e)
-    console.log('AlignmentTool', AlignmentTool)
   }
   _blockStyleFn (contentBlock) {
     const type = this.props.type || contentBlock.getType()

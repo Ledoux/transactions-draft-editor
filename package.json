@@ -40,12 +40,14 @@
   "main": "lib/index.js",
   "name": "transactions-draft-editor",
   "scripts": {
-    "compile": "babel --presets latest,react -d lib/ src/",
+    "compile": "concurrently \"npm run compile-js\" \"npm run compile-sass\"",
+    "compile-js": "babel --presets latest,react -d lib/ src/",
+    "compile-sass": "node-sass -o lib styles/index.scss",
     "test": "ava -v",
     "dev": "npm run dev",
-    "dev-watch-sass": "node-sass -w src/styles -o lib/styles src/styles/index.scss",
-    "dev-watch-js": "nodemon --watch src --ignore src/styles --exec \"npm run compile\"",
+    "dev-watch-sass": "node-sass -w styles -o lib styles/index.scss",
+    "dev-watch-js": "nodemon --watch src --exec \"npm run compile\"",
     "dev-watch": "concurrently \"npm run dev-watch-js\" \"npm run dev-watch-sass\""
   },
-  "version": "0.0.4"
+  "version": "0.0.6"
 }
