@@ -1,11 +1,9 @@
 // https://www.draft-js-plugins.com/plugin/image
 import classnames from 'classnames'
-import { AtomicBlockUtils,
-  convertFromHTML,
+import { convertFromHTML,
   convertFromRaw,
   ContentState,
-  EditorState,
-  RichUtils
+  EditorState
 } from 'draft-js'
 import createAlignmentPlugin from 'draft-js-alignment-plugin'
 import createFocusPlugin from 'draft-js-focus-plugin'
@@ -16,12 +14,9 @@ import createResizeablePlugin from 'draft-js-resizeable-plugin'
 import Editor, { composeDecorators } from 'draft-js-plugins-editor'
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
-import { Button,
-  IconButton,
-  Uploader
-} from 'transactions-interface-web'
+import { Button } from 'transactions-interface-web'
 
-import ImageAdd from './ImageAdd'
+import ControlsBar from './ControlsBar'
 
 const focusPlugin = createFocusPlugin()
 const resizeablePlugin = createResizeablePlugin()
@@ -42,21 +37,6 @@ const plugins = [
   resizeablePlugin,
   imagePlugin,
   null
-]
-
-const inlineStyleButtons = [
-  {
-    icon: 'bold',
-    string: 'BOLD'
-  },
-  {
-    icon: 'italic',
-    string: 'ITALIC'
-  },
-  {
-    icon: 'chain',
-    string: 'LINK'
-  }
 ]
 
 const getContentStateFromHtml = html => {
@@ -88,18 +68,13 @@ class TextEditor extends Component {
     )
     : EditorState.createEmpty()
     // state
-    this.state = {
-      editorScrollTop: null,
-      editorState,
-      isImage: true,
-      src: props.initialSrc
+    this.state = { editorScrollTop: null,
+      editorState
     }
     // style
     this.blockStyleFn = this._blockStyleFn.bind(this)
     // plugin focus
     this.onFocusClick = this._onFocusClick.bind(this)
-    // special inline tool controls
-    this.onToggleInlineStyleClick = this._onToggleInlineStyleClick.bind(this)
     // global editor change
     this.onEditorChange = this._onEditorChange.bind(this)
   }
@@ -131,40 +106,6 @@ class TextEditor extends Component {
   _onFocusClick () {
     this.editorElement.focus()
   }
-  _onImageClick () {
-    // thanks to https://stackoverflow.com/questions/41039315/how-to-properly-add-image-atomic-without-2-empty-lines-in-draft-js
-    const { editorState, src } = this.state
-    const contentState = editorState.getCurrentContent()
-    const withEntityContentState = contentState.createEntity('image', 'IMMUTABLE', { src })
-    const entityKey = withEntityContentState.getLastCreatedEntityKey()
-    const withAtomicEditorState = AtomicBlockUtils.insertAtomicBlock(editorState, entityKey, ' ')
-    let newContentState = withAtomicEditorState.getCurrentContent()
-    let newBlockMap = newContentState.getBlockMap()
-    const currentAtomicBlock = newBlockMap.find(block => {
-       if (block.getEntityAt(0) === entityKey) {
-          return block
-       }
-    })
-    const atomicBlockKey = currentAtomicBlock.getKey()
-    const block_before = newContentState.getBlockBefore(atomicBlockKey).getKey()
-    newBlockMap = newBlockMap.filter(block => {
-       if ((block.getKey() !== block_before) ) {
-          return block
-       }
-    })
-    newContentState = contentState.set('blockMap', newBlockMap)
-    const newEditorState = EditorState.createWithContent(newContentState)
-    this.onEditorChange(newEditorState)
-  }
-
-  _onImageInputChange (event) {
-    this.setState({ src: event.target.value })
-  }
-  _onToggleInlineStyleClick (string) {
-    const { editorState } = this.state
-    const newEditorState = RichUtils.toggleInlineStyle(editorState, string)
-    this.onEditorChange(newEditorState)
-  }
   _onEditorChange (editorState) {
     const { onChange } = this.props
     // check for split-block event to not automatically scroll down
@@ -175,16 +116,10 @@ class TextEditor extends Component {
     // classic editor state update
     this.setState(newState)
     // hook for parent change
-    onChange && onChange({
-      divEditorElement: this.divEditorElement,
+    onChange && onChange({ divEditorElement: this.divEditorElement,
       editorElement: this.editorElement,
       editorState
     })
-  }
-  componentDidUpdate () {
-    if (this.state.isImage === false && this.imageElement.complete) {
-      this.setState({ isImage: true })
-    }
   }
   componentWillUnmount () {
     this.divEditorElement && this.divEditorElement.removeEventListener('scroll', this.scrollListener)
@@ -192,52 +127,25 @@ class TextEditor extends Component {
   render() {
     const { blockStyleFn,
       onFocusClick,
-      onToggleInlineStyleClick,
       onEditorChange,
-      onImageClick,
-      onImageError,
-      onImageInputChange
     } = this
-    const { placeholder } = this.props
-    const { editorState,
-      isImage,
-      src
-    } = this.state
-    const currentInlineStyleStrings = editorState.getCurrentInlineStyle()
-    return (<div className='text-editor'>
-      <div className='text-editor__control'>
-        <div className='text-editor__control__inline col'>
-          {
-            inlineStyleButtons.map(({ icon, string }, index) => <IconButton
-              className={classnames('icon-button icon-button--no-text', {
-                'icon-button--no-text--clicked': currentInlineStyleStrings.has(string),
-                'icon-button--no-text--first': index === 0,
-                'icon-button--no-text--last': index === inlineStyleButtons.length - 1
-              })}
-              icon={icon}
-              key={index}
-              onClick={event => {
-                event.preventDefault()
-                onToggleInlineStyleClick(string)
-              }}
-              onMouseDown={ event => event.preventDefault() }
-            />)
-          }
-        </div>
-        <div className='text-editor__control__meta col'>
-          <div className='text-editor__control__meta__image'>
-            <ImageAdd
-              editorState={editorState}
-              onEditorChange={onEditorChange}
-              onUrlChange={onImageInputChange}
-              modifier={imagePlugin.addImage}
-              src={src}
-            />
-          </div>
-        </div>
-      </div>
-      <div
-        className='text-editor__content'
+    const { className,
+      isControl,
+      isScroll,
+      placeholder
+    } = this.props
+    const { editorState } = this.state
+    return (<div className={className || 'text-editor'}>
+      {
+        isControl && <ControlsBar
+          editorState={editorState}
+          imagePlugin={imagePlugin}
+          onChange={onEditorChange}
+        />
+      }
+      <div className={classnames('text-editor__content', {
+            'text-editor__content': isScroll
+          })}
         itemProp='reviewBody'
         onClick={onFocusClick}
         ref={ element => this.divEditorElement = element }
@@ -250,10 +158,16 @@ class TextEditor extends Component {
           plugins={plugins}
           ref={ element => { this.editorElement = element }}
         />
-      { plugins.includes(alignmentPlugin) && <AlignmentTool ref={_e => { this._e = _e }} testa='ee'/> }
+        {
+          plugins.includes(alignmentPlugin) && <AlignmentTool />
+        }
       </div>
     </div>)
   }
+}
+
+TextEditor.defaultProps = {
+  isControl: true
 }
 
 export default TextEditor

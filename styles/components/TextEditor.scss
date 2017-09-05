@@ -1,28 +1,17 @@
 .text-editor {
   overflow-y: hidden;
-  &__control {
-    margin-bottom: 0.5rem;
-    overflow-y: hidden;
-    &__inline {
-      margin-right: 0.5rem;
-      padding-top: 0.25rem;
-    }
-    &__meta {
-      &__image {
-
-      }
-    }
-  }
   &__content {
     border: 1px solid $medium-grey;
     border-radius: $border-radius;
     box-sizing: border-box;
     background: white;
-    height: 20rem;
     font-family: $font-family;
     margin-bottom: 1rem;
     padding: 1rem;
-    overflow-y: auto;
+    &--scroll {
+      height: 20rem;
+      overflow-y: auto;
+    }
     &__unstyled {
       color: $middle-font-color;
       font-family: $font-family;

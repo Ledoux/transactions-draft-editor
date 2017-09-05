@@ -1,6 +1,8 @@
+import ControlsBar from './ControlsBar'
 import ImageAdd from './ImageAdd'
 import TextEditor from './TextEditor'
 
-export { ImageAdd,
+export { ControlsBar,
+  ImageAdd,
   TextEditor
 }
