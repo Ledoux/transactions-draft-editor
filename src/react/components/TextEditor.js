@@ -1,7 +1,6 @@
 // https://www.draft-js-plugins.com/plugin/image
 import classnames from 'classnames'
-import { convertFromHTML,
-  convertFromRaw,
+import { convertFromRaw,
   ContentState,
   EditorState
 } from 'draft-js'
@@ -17,6 +16,7 @@ import ReactDOM from 'react-dom'
 import { Button } from 'transactions-interface-web'
 
 import ControlsBar from './ControlsBar'
+import { getContentStateFromHtml } from '../../utils'
 
 const focusPlugin = createFocusPlugin()
 const resizeablePlugin = createResizeablePlugin()
@@ -39,14 +39,6 @@ const plugins = [
   null
 ]
 
-const getContentStateFromHtml = html => {
-  const blocksFromHTML = convertFromHTML(html)
-  return ContentState.createFromBlockArray(
-    blocksFromHTML.contentBlocks,
-    blocksFromHTML.entityMap
-  )
-}
-
 class TextEditor extends Component {
   constructor(props) {
     // super
@@ -57,8 +49,7 @@ class TextEditor extends Component {
     } = props
     // editorSatte
     const editorState = (initialRaw || initialHtml)
-    ? EditorState.createWithContent(
-      initialRaw
+    ? EditorState.createWithContent(initialRaw
       ? convertFromRaw(
         typeof initialRaw === 'string'
         ? JSON.parse(initialRaw)
@@ -79,10 +70,12 @@ class TextEditor extends Component {
     this.onEditorChange = this._onEditorChange.bind(this)
   }
   componentWillMount () {
-    // FIX OF THE MATHJAX PLUGINS LIBRARY
-    // THAT ACTUALLY CANNOT REBOOT TWICE
-    // SO WE NEED TO REINITIALIZE IT
-    plugins[plugins.length - 1] = createMathjaxPlugin()
+    if (this.props.isMathjax) {
+      // FIX OF THE MATHJAX PLUGINS LIBRARY
+      // THAT ACTUALLY CANNOT REBOOT TWICE
+      // SO WE NEED TO REINITIALIZE IT
+      plugins[plugins.length - 1] = createMathjaxPlugin()
+    }
   }
   componentDidMount () {
     // special listener because by default
@@ -99,6 +92,18 @@ class TextEditor extends Component {
       }
     })
   }
+  componentDidUpdate () {
+    const { onChange } = this.props
+    const { editorState } = this.state
+    // hook for parent change only when it has updated because of the editor state
+    if (this._hasEditorChanged) {
+      onChange && onChange({ divEditorElement: this.divEditorElement,
+        editorElement: this.editorElement,
+        editorState
+      })
+      this._hasEditorChanged = false
+    }
+  }
   _blockStyleFn (contentBlock) {
     const type = this.props.type || contentBlock.getType()
     return `text-editor__content__${type}`
@@ -107,19 +112,15 @@ class TextEditor extends Component {
     this.editorElement.focus()
   }
   _onEditorChange (editorState) {
-    const { onChange } = this.props
     // check for split-block event to not automatically scroll down
     const newState = { editorState }
-    if (editorState.getLastChangeType() === 'split-block') {
+    const lastChangeType = editorState.getLastChangeType()
+    if (lastChangeType === 'split-block') {
       newState.editorScrollTop = this.divEditorElement && this.divEditorElement.scrollTop
     }
     // classic editor state update
+    this._hasEditorChanged = lastChangeType
     this.setState(newState)
-    // hook for parent change
-    onChange && onChange({ divEditorElement: this.divEditorElement,
-      editorElement: this.editorElement,
-      editorState
-    })
   }
   componentWillUnmount () {
     this.divEditorElement && this.divEditorElement.removeEventListener('scroll', this.scrollListener)
@@ -155,7 +156,7 @@ class TextEditor extends Component {
           editorState={editorState}
           onChange={onEditorChange}
           placeholder={placeholder}
-          plugins={plugins}
+          plugins={plugins.filter(plugin => plugin)}
           ref={ element => { this.editorElement = element }}
         />
         {
@@ -166,8 +167,8 @@ class TextEditor extends Component {
   }
 }
 
-TextEditor.defaultProps = {
-  isControl: true
+TextEditor.defaultProps = { isControl: true,
+  isMathjax: false
 }
 
 export default TextEditor
