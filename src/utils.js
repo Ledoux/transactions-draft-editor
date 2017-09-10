@@ -10,11 +10,12 @@ export const getContentStateFromHtml = html => {
   )
 }
 
-export const getRawFromText = text => {
+export const getRawFromText = (text, config) => {
+  const eol = config.eol || '\n'
   return { entityMap: {},
     // when text is too big we prefer to jump lines
     // in order to decrease the size of the block
-    blocks: text.split('\n').map((line, index) => {
+    blocks: text.split(eol).map((line, index) => {
       return {
         key: `${index}`,
         text: line,

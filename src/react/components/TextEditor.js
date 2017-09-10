@@ -47,8 +47,8 @@ class TextEditor extends Component {
     const { initialRaw,
       initialHtml
     } = props
-    // editorSatte
-    const editorState = (initialRaw || initialHtml)
+    // editorState
+    let editorState = (initialRaw || initialHtml)
     ? EditorState.createWithContent(initialRaw
       ? convertFromRaw(
         typeof initialRaw === 'string'
