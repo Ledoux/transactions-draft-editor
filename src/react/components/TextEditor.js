@@ -16,7 +16,9 @@ import ReactDOM from 'react-dom'
 import { Button } from 'transactions-interface-web'
 
 import ControlsBar from './ControlsBar'
-import { getContentStateFromHtml } from '../../utils'
+import { getContentStateFromHtml,
+  getEmptyRaw
+} from '../../utils'
 
 const focusPlugin = createFocusPlugin()
 const resizeablePlugin = createResizeablePlugin()
@@ -48,15 +50,18 @@ class TextEditor extends Component {
       initialHtml
     } = props
     // editorState
-    let editorState = (initialRaw || initialHtml)
-    ? EditorState.createWithContent(initialRaw
-      ? convertFromRaw(
+    let contentState
+    if (initialHtml) {
+      contentState = getContentStateFromHtml(initialHtml)
+    } else if (initialRaw) {
+      contentState = convertFromRaw(
         typeof initialRaw === 'string'
         ? JSON.parse(initialRaw)
         : initialRaw
       )
-      : getContentStateFromHtml(initialHtml)
-    )
+    }
+    const editorState = contentState
+    ? EditorState.createWithContent(contentState)
     : EditorState.createEmpty()
     // state
     this.state = { editorScrollTop: null,
@@ -67,7 +72,7 @@ class TextEditor extends Component {
     // plugin focus
     this.onFocusClick = this._onFocusClick.bind(this)
     // global editor change
-    this.onEditorChange = this._onEditorChange.bind(this)
+    this.onChange = this._onChange.bind(this)
   }
   componentWillMount () {
     if (this.props.isMathjax) {
@@ -111,7 +116,7 @@ class TextEditor extends Component {
   _onFocusClick () {
     this.editorElement.focus()
   }
-  _onEditorChange (editorState) {
+  _onChange (editorState) {
     // check for split-block event to not automatically scroll down
     const newState = { editorState }
     const lastChangeType = editorState.getLastChangeType()
@@ -127,8 +132,8 @@ class TextEditor extends Component {
   }
   render() {
     const { blockStyleFn,
+      onChange,
       onFocusClick,
-      onEditorChange,
     } = this
     const { className,
       isControl,
@@ -136,34 +141,34 @@ class TextEditor extends Component {
       placeholder
     } = this.props
     const { editorState } = this.state
-    return (<div className={className || 'text-editor'}>
-      {
-        isControl && <ControlsBar
-          editorState={editorState}
-          imagePlugin={imagePlugin}
-          onChange={onEditorChange}
-        />
-      }
-      <div className={classnames('text-editor__content', {
-            'text-editor__content': isScroll
-          })}
-        itemProp='reviewBody'
-        onClick={onFocusClick}
-        ref={ element => this.divEditorElement = element }
-      >
-        <Editor
-          blockStyleFn={blockStyleFn}
-          editorState={editorState}
-          onChange={onEditorChange}
-          placeholder={placeholder}
-          plugins={plugins.filter(plugin => plugin)}
-          ref={ element => { this.editorElement = element }}
-        />
+    return (
+      <div className={className || 'text-editor'}>
         {
-          plugins.includes(alignmentPlugin) && <AlignmentTool />
+          isControl && <ControlsBar editorState={editorState}
+            imagePlugin={imagePlugin}
+            onChange={onChange}
+          />
         }
+        <div className={classnames('text-editor__content', {
+              'text-editor__content': isScroll
+            })}
+          itemProp='reviewBody'
+          onClick={onFocusClick}
+          ref={ element => this.divEditorElement = element }
+        >
+          <Editor blockStyleFn={blockStyleFn}
+            editorState={editorState}
+            onChange={onChange}
+            placeholder={placeholder}
+            plugins={plugins.filter(plugin => plugin)}
+            ref={ element => { this.editorElement = element }}
+          />
+          {
+            plugins.includes(alignmentPlugin) && <AlignmentTool />
+          }
+        </div>
       </div>
-    </div>)
+    )
   }
 }
 

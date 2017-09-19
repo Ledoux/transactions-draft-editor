@@ -10,7 +10,7 @@ export const getContentStateFromHtml = html => {
   )
 }
 
-export const getRawFromText = (text, config) => {
+export const getRawFromText = (text, config = {}) => {
   const eol = config.eol || '\n'
   return { entityMap: {},
     // when text is too big we prefer to jump lines
@@ -27,6 +27,10 @@ export const getRawFromText = (text, config) => {
       }
     })
   }
+}
+
+export const getEmptyRaw = () => {
+  return getRawFromText('')
 }
 
 export function getIsEmptyContent (editorState) {
