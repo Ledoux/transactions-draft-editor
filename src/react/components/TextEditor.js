@@ -97,16 +97,26 @@ class TextEditor extends Component {
       }
     })
   }
-  componentDidUpdate () {
-    const { onChange } = this.props
+  componentDidUpdate (prevProps, prevState) {
+    const { onCurrentContentChange,
+      onEditorStateChange
+    } = this.props
     const { editorState } = this.state
     // hook for parent change only when it has updated because of the editor state
-    if (this._hasEditorChanged) {
-      onChange && onChange({ divEditorElement: this.divEditorElement,
+    if (editorState !== prevState.editorState && this._lastChangeType) {
+      // prepare the payload
+      const newChange = { divEditorElement: this.divEditorElement,
         editorElement: this.editorElement,
         editorState
-      })
-      this._hasEditorChanged = false
+      }
+      // hook for global editor state change (ie current content change +  selection)
+      onEditorStateChange && onEditorStateChange(newChange)
+      if (editorState.getCurrentContent() !== prevState.editorState.getCurrentContent()) {
+        // hook for only current content change
+        onCurrentContentChange && onCurrentContentChange(newChange)
+      }
+      // reset
+      this._lastChangeType = null
     }
   }
   _blockStyleFn (contentBlock) {
@@ -124,7 +134,7 @@ class TextEditor extends Component {
       newState.editorScrollTop = this.divEditorElement && this.divEditorElement.scrollTop
     }
     // classic editor state update
-    this._hasEditorChanged = lastChangeType
+    this._lastChangeType = lastChangeType
     this.setState(newState)
   }
   componentWillUnmount () {

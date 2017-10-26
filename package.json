@@ -23,7 +23,7 @@
     "draft-js-resizeable-plugin": "beta",
     "draft-js-plugins-editor": "beta",
     "transactions-interface-web": "latest",
-    "react": "15.5.4"
+    "react": "^16.0.0"
   },
   "description": "In the framework of transactions, this is a frontend plugin that gives you very smart uis",
   "devDependencies": {
@@ -49,5 +49,5 @@
     "dev-watch-js": "nodemon --watch src --exec \"npm run compile\"",
     "dev-watch": "concurrently \"npm run dev-watch-js\" \"npm run dev-watch-sass\""
   },
-  "version": "0.0.8"
+  "version": "0.0.9"
 }
