@@ -51,5 +51,5 @@
     "dev-watch-js": "nodemon --watch src --exec \"npm run compile\"",
     "dev-watch": "concurrently \"npm run dev-watch-js\" \"npm run dev-watch-sass\""
   },
-  "version": "0.0.10"
+  "version": "0.0.11"
 }
