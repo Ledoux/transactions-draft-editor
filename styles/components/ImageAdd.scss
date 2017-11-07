@@ -2,8 +2,8 @@
   overflow-y: hidden;
   padding-left: 0.25rem;
   padding-right: 0.25rem;
-  &__url {
-    padding-top: 0.25rem;
+  &__src {
+    margin-right: 0.25rem;
     &__input {
       border: 1px solid rgba(0,0,0,.125);
       border-radius: $border-radius;
@@ -22,7 +22,7 @@
   &__uploader {
     cursor: pointer;
     height: 2.35rem;
-    margin-right: 0.05rem;
+    margin-right: 0.25rem;
     overflow-y: hidden;
     &__img {
       height: 2rem;
@@ -30,14 +30,19 @@
     }
   }
   &__insert {
-    background: transparent;
-    border: 1px solid $medium-grey;
-    border-radius: 50%;
-    height: 2rem;
-    margin-top: 0.25rem;
-    width: 2rem;
-    svg {
-      fill: $dark-grey;
+    // background: transparent;
+    // border: 1px solid $medium-grey;
+    // border-radius: 50%;
+    // height: 2rem;
+    // margin-top: 0.25rem;
+    // width: 2rem;
+    // svg {
+    //  fill: $dark-grey;
+    // }
+    &--disabled {
+      opacity: 0.25;
+      transition: $transition;
     }
+    transition: $transition;
   }
 }

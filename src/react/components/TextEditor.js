@@ -123,9 +123,6 @@ class TextEditor extends Component {
     const type = this.props.type || contentBlock.getType()
     return `text-editor__content__${type}`
   }
-  _onFocusClick () {
-    this.editorElement.focus()
-  }
   _onChange (editorState) {
     // check for split-block event to not automatically scroll down
     const newState = { editorState }
@@ -137,6 +134,9 @@ class TextEditor extends Component {
     this._lastChangeType = lastChangeType
     this.setState(newState)
   }
+  _onFocusClick () {
+    this.editorElement.focus()
+  }
   componentWillUnmount () {
     this.divEditorElement && this.divEditorElement.removeEventListener('scroll', this.scrollListener)
   }
@@ -145,7 +145,9 @@ class TextEditor extends Component {
       onChange,
       onFocusClick,
     } = this
-    const { className,
+    const { assetsPathTest,
+      existsPath,
+      className,
       isControl,
       isScroll,
       placeholder
@@ -156,8 +158,7 @@ class TextEditor extends Component {
         {
           isControl && <ControlsBar editorState={editorState}
             imagePlugin={imagePlugin}
-            onChange={onChange}
-          />
+            onEditorChange={onChange} />
         }
         <div className={classnames('text-editor__content', {
               'text-editor__content': isScroll
@@ -166,7 +167,9 @@ class TextEditor extends Component {
           onClick={onFocusClick}
           ref={ element => this.divEditorElement = element }
         >
-          <Editor blockStyleFn={blockStyleFn}
+          <Editor assetsPathTest={assetsPathTest}
+            existsPath={existsPath}
+            blockStyleFn={blockStyleFn}
             editorState={editorState}
             onChange={onChange}
             placeholder={placeholder}

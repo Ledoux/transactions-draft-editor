@@ -4,7 +4,7 @@ A text editor from react draft js with already classic inline style toolbar, mat
 For now quick setup:
 onVisibilityChanged = (visibleBlock) => {
 setTimeout (() => {
-   if (!_this._reactInternalInstance) {
+   if (!_this.toolbar) {
        return
    }
    let position

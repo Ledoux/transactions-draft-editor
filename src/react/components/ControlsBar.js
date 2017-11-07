@@ -19,7 +19,7 @@ class ControlsBar extends Component {
   }
   _onImageClick () {
     // thanks to https://stackoverflow.com/questions/41039315/how-to-properly-add-image-atomic-without-2-empty-lines-in-draft-js
-    const { editorState, src } = this.props
+    const { editorState, onEditorChange, src } = this.props
     const contentState = editorState.getCurrentContent()
     const withEntityContentState = contentState.createEntity('image', 'IMMUTABLE', { src })
     const entityKey = withEntityContentState.getLastCreatedEntityKey()
@@ -40,10 +40,10 @@ class ControlsBar extends Component {
     })
     newContentState = contentState.set('blockMap', newBlockMap)
     const newEditorState = EditorState.createWithContent(newContentState)
-    this.onEditorChange(newEditorState)
+    onEditorChange(newEditorState)
   }
-  _onImageInputChange (event) {
-    this.setState({ src: event.target.value })
+  _onImageInputChange (src) {
+    this.setState({ src })
   }
   _onToggleInlineStyleClick (string) {
     const { editorState,
@@ -61,7 +61,9 @@ class ControlsBar extends Component {
     const { onImageInputChange,
       onToggleInlineStyleClick
     } = this
-    const { editorState,
+    const { assetsPathTest,
+      existsPath,
+      editorState,
       imagePlugin,
       inlineStyleButtons,
       onEditorChange
@@ -69,12 +71,11 @@ class ControlsBar extends Component {
     const { src } = this.state
     const currentInlineStyleStrings = editorState.getCurrentInlineStyle()
     return (
-      <div className='controls-bar'>
-        <div className='controls-bar__inline col'>
+      <div className='controls-bar flex items-center'>
+        <div className='controls-bar__inline mr1'>
           {
             inlineStyleButtons.map(({ icon, string }, index) => (
-              <IconButton
-                className={classnames('icon-button icon-button--no-text', {
+              <IconButton className={classnames('icon-button icon-button--no-text', {
                   'icon-button--no-text--clicked': currentInlineStyleStrings.has(string),
                   'icon-button--no-text--first': index === 0,
                   'icon-button--no-text--last': index === inlineStyleButtons.length - 1
@@ -85,20 +86,19 @@ class ControlsBar extends Component {
                   event.preventDefault()
                   onToggleInlineStyleClick(string)
                 }}
-                onMouseDown={ event => event.preventDefault() }
-              />)
-            )
+                onMouseDown={ event => event.preventDefault() } />
+            ))
           }
         </div>
-        <div className='controls-bar__meta col'>
+        <div className='controls-bar__meta'>
           <div className='controls-bar__meta__image'>
-            <ImageAdd
+            <ImageAdd assetsPathTest={assetsPathTest}
+              existsPath={existsPath}
               editorState={editorState}
               onEditorChange={onEditorChange}
-              onUrlChange={onImageInputChange}
+              onInputChange={onImageInputChange}
               modifier={imagePlugin.addImage}
-              src={src}
-            />
+              src={src} />
           </div>
         </div>
       </div>
@@ -116,10 +116,12 @@ ControlsBar.defaultProps = {
       icon: 'italic',
       string: 'ITALIC'
     },
+    /*
     {
       icon: 'chain',
       string: 'LINK'
     }
+    */
   ]
 }
 

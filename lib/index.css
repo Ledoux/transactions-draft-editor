@@ -1,17 +1,14 @@
 .controls-bar {
   margin-bottom: 0.5rem;
   overflow-y: hidden; }
-  .controls-bar__inline {
-    margin-right: 0.5rem;
-    padding-top: 0.25rem; }
 
 .image-add {
   overflow-y: hidden;
   padding-left: 0.25rem;
   padding-right: 0.25rem; }
-  .image-add__url {
-    padding-top: 0.25rem; }
-    .image-add__url__input {
+  .image-add__src {
+    margin-right: 0.25rem; }
+    .image-add__src__input {
       border: 1px solid rgba(0, 0, 0, 0.125);
       border-radius: 0.25rem;
       color: #777777;
@@ -21,25 +18,21 @@
       height: 2rem;
       padding-left: 0.25rem;
       width: 12.5rem; }
-      .image-add__url__input:focus {
+      .image-add__src__input:focus {
         outline: none; }
   .image-add__uploader {
     cursor: pointer;
     height: 2.35rem;
-    margin-right: 0.05rem;
+    margin-right: 0.25rem;
     overflow-y: hidden; }
     .image-add__uploader__img {
       height: 2rem;
       width: 2rem; }
   .image-add__insert {
-    background: transparent;
-    border: 1px solid #dcdddc;
-    border-radius: 50%;
-    height: 2rem;
-    margin-top: 0.25rem;
-    width: 2rem; }
-    .image-add__insert svg {
-      fill: #4a4a4a; }
+    transition: all 0.4s ease-out; }
+    .image-add__insert--disabled {
+      opacity: 0.25;
+      transition: all 0.4s ease-out; }
 
 .text-editor {
   overflow-y: hidden; }
@@ -50,6 +43,7 @@
     background: white;
     font-family: "Raleway", "Helvetica Neue", Arial, sans-serif;
     margin-bottom: 1rem;
+    min-height: 5rem;
     padding: 1rem; }
     .text-editor__content--scroll {
       height: 20rem;
