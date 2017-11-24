@@ -94,8 +94,10 @@ class ImageAdd extends Component {
             value={value} />
         </div>
         <Uploader className='uploader image-add__uploader'
-          fileName='test'
-          onUpload={json => json.url && this.setState({ src: json.url })}>
+          onUpload={json => json.url && this.setState({
+            isValidImage: true, 
+            src: json.url
+          })}>
           <img className='image-add__uploader__img'
             onError={onImageError}
             ref={ element => this.imageElement = element }
